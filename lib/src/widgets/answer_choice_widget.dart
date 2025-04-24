@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../models/question.dart';
@@ -37,6 +40,7 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
         question: widget.question,
       ),
       "date" => DateAnswer(onChange: widget.onChange),
+      "file" => FileAnswer(onChange: widget.onChange),
       _ => SizedBox.shrink(),
     };
 
@@ -251,6 +255,74 @@ class _DateAnswerState extends State<DateAnswer> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FileAnswer extends StatefulWidget {
+  const FileAnswer({super.key, required this.onChange});
+  final void Function(List<String> answers) onChange;
+
+  @override
+  State<FileAnswer> createState() => _FileAnswerState();
+}
+
+class _FileAnswerState extends State<FileAnswer> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: InkWell(
+            onTap: () async {
+              final data = await FilePicker.platform.pickFiles();
+
+              if (data != null) {
+                widget.onChange([]);
+                _textEditingController.text = '';
+                // final dataBase64 = <String>[];
+                // for (var x in data.xFiles) {
+                //   if (dataBase64.isNotEmpty) {
+                //     _textEditingController.text =
+                //         "${_textEditingController.text}, ";
+                //   }
+                //   dataBase64.add(base64Encode(await x.readAsBytes()));
+                //   _textEditingController.text =
+                //       _textEditingController.text + x.name;
+                // }
+
+                widget.onChange([
+                  base64Encode(await data.xFiles.first.readAsBytes()),
+                ]);
+                _textEditingController.text = data.xFiles.first.name;
+                // widget.onChange([_textEditingController.text]);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: IgnorePointer(
+                ignoring: true,
+                child: TextFormField(
+                  controller: _textEditingController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.file_present),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            widget.onChange([]);
+            _textEditingController.text = '';
+          },
+          icon: Icon(Icons.close),
+        ),
+      ],
     );
   }
 }

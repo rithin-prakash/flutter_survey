@@ -44,8 +44,55 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     Question(
       isMandatory: true,
-      question: "Please tell us why you like it",
+      question: "Please select date of birth",
       answerType: 'date',
+    ),
+    Question(
+      isMandatory: true,
+      question: "Please choose your passport image",
+      answerType: 'file',
+    ),
+    Question(
+      isMandatory: true,
+      question: "Please choose id type",
+      answerType: 'single',
+      answerChoices: {
+        "Passport": [
+          Question(
+            isMandatory: true,
+            question: "Please upload passport image",
+            answerType: 'file',
+          ),
+        ],
+        "Emirates Id": [
+          Question(
+            isMandatory: true,
+            question: "Please upload Emirates ID image",
+            answerType: 'file',
+          ),
+        ]
+      },
+    ),
+    Question(
+      isMandatory: true,
+      question: "Please choose Company Doc type",
+      answerType: 'multiple',
+      answerChoices: {
+        "Registration Document": [
+          Question(
+            isMandatory: true,
+            question: "Please upload Registration Document image",
+            answerType: 'file',
+          ),
+        ],
+        "License Document": [
+          Question(
+            isMandatory: true,
+            question: "Please upload License Document image",
+            answerType: 'file',
+          ),
+        ]
+      },
     ),
     // Question(
     //   isMandatory: true,
