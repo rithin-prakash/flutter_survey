@@ -9,7 +9,10 @@ class Question extends Equatable {
   final String question;
 
   ///The parameter that indicates whether the question is a single choice or multiple choice question.
+  @Deprecated("singleChoice will be deprecated. Use answerType")
   final bool singleChoice;
+
+  final String answerType;
 
   ///Used to configure the list of possible answer choices and their corresponding list of [Question] objects that follow.
   final Map<String, List<Question>?> answerChoices;
@@ -33,6 +36,7 @@ class Question extends Equatable {
       this.isMandatory = false,
       this.errorText,
       this.properties,
+      required this.answerType,
       List<String>? answers})
       : answers = answers ?? [],
         answerChoices = answerChoices ?? {},
@@ -46,5 +50,5 @@ class Question extends Equatable {
 
   @override
   List<Object?> get props =>
-      [question, singleChoice, answerChoices, isMandatory];
+      [question, singleChoice, answerChoices, isMandatory, answerType];
 }

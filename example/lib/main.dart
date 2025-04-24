@@ -40,92 +40,111 @@ class _MyHomePageState extends State<MyHomePage> {
     Question(
       isMandatory: true,
       question: "Please tell us why you like it",
+      answerType: 'text',
     ),
     Question(
       isMandatory: true,
-      question: 'Do you like drinking coffee?',
-      answerChoices: {
-        "Yes": [
-          Question(
-              singleChoice: false,
-              question: "What are the brands that you've tried?",
-              answerChoices: {
-                "Nestle": null,
-                "Starbucks": null,
-                "Coffee Day": [
-                  Question(
-                    question: "Did you enjoy visiting Coffee Day?",
-                    isMandatory: true,
-                    answerChoices: {
-                      "Yes": [
-                        Question(
-                          question: "Please tell us why you like it",
-                        )
-                      ],
-                      "No": [
-                        Question(
-                          question: "Please tell us what went wrong",
-                        )
-                      ],
-                    },
-                  )
-                ],
-              })
-        ],
-        "No": [
-          Question(
-            question: "Do you like drinking Tea then?",
-            answerChoices: {
-              "Yes": [
-                Question(
-                    question: "What are the brands that you've tried?",
-                    answerChoices: {
-                      "Nestle": null,
-                      "ChaiBucks": null,
-                      "Indian Premium Tea": [
-                        Question(
-                          question: "Did you enjoy visiting IPT?",
-                          answerChoices: {
-                            "Yes": [
-                              Question(
-                                question: "Please tell us why you like it",
-                              )
-                            ],
-                            "No": [
-                              Question(
-                                question: "Please tell us what went wrong",
-                              )
-                            ],
-                          },
-                        )
-                      ],
-                    })
-              ],
-              "No": null,
-            },
-          )
-        ],
-      },
+      question: "Please tell us why you like it",
+      answerType: 'date',
     ),
-    Question(
-        question: "What age group do you fall in?",
-        isMandatory: true,
-        answerChoices: const {
-          "18-20": null,
-          "20-30": null,
-          "Greater than 30": null,
-        })
+    // Question(
+    //   isMandatory: true,
+    //   question: 'Do you like drinking coffee?',
+    //   answerType: 'single',
+    //   answerChoices: {
+    //     "Yes": [
+    //       Question(
+    //           singleChoice: false,
+    //           question: "What are the brands that you've tried?",
+    //           answerType: 'multiple',
+    //           answerChoices: {
+    //             "Nestle": null,
+    //             "Starbucks": null,
+    //             "Coffee Day": [
+    //               Question(
+    //                 question: "Did you enjoy visiting Coffee Day?",
+    //                 isMandatory: true,
+    //                 answerType: 'single',
+    //                 answerChoices: {
+    //                   "Yes": [
+    //                     Question(
+    //                       question: "Please tell us why you like it",
+    //                       answerType: 'text',
+    //                     )
+    //                   ],
+    //                   "No": [
+    //                     Question(
+    //                       question: "Please tell us what went wrong",
+    //                       answerType: 'text',
+    //                     )
+    //                   ],
+    //                 },
+    //               )
+    //             ],
+    //           })
+    //     ],
+    //     "No": [
+    //       Question(
+    //         question: "Do you like drinking Tea then?",
+    //         answerType: 'single',
+    //         answerChoices: {
+    //           "Yes": [
+    //             Question(
+    //                 question: "What are the brands that you've tried?",
+    //                 answerType: 'multiple',
+    //                 answerChoices: {
+    //                   "Nestle": null,
+    //                   "ChaiBucks": null,
+    //                   "Indian Premium Tea": [
+    //                     Question(
+    //                       question: "Did you enjoy visiting IPT?",
+    //                       answerType: 'single',
+    //                       answerChoices: {
+    //                         "Yes": [
+    //                           Question(
+    //                             question: "Please tell us why you like it",
+    //                             answerType: 'text',
+    //                           )
+    //                         ],
+    //                         "No": [
+    //                           Question(
+    //                             question: "Please tell us what went wrong",
+    //                             answerType: 'text',
+    //                           )
+    //                         ],
+    //                       },
+    //                     )
+    //                   ],
+    //                 })
+    //           ],
+    //           "No": null,
+    //         },
+    //       )
+    //     ],
+    //   },
+    // ),
+    // Question(
+    //     question: "What age group do you fall in?",
+    //     isMandatory: true,
+    //     answerType: 'single',
+    //     answerChoices: const {
+    //       "18-20": null,
+    //       "20-30": null,
+    //       "Greater than 30": null,
+    //     })
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Survey(
-            onNext: (questionResults) {
-              _questionResults = questionResults;
-            },
-            initialData: _initialData),
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Survey(
+              onNext: (questionResults) {
+                _questionResults = questionResults;
+              },
+              initialData: _initialData),
+        ),
       ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
@@ -141,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text("Validate"),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  //do something
+                  print(_questionResults);
                 }
               },
             ),

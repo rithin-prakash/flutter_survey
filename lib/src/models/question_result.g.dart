@@ -8,12 +8,16 @@ part of 'question_result.dart';
 
 QuestionResult _$QuestionResultFromJson(Map<String, dynamic> json) =>
     QuestionResult(
-      question: json['question'] as String,
-      answers:
-          (json['answers'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    )..children = (json['children'] as List<dynamic>)
-        .map((e) => QuestionResult.fromJson(e as Map<String, dynamic>))
-        .toList();
+        question: json['question'] as String,
+        answers:
+            (json['answers'] as List<dynamic>?)
+                ?.map((e) => e as String)
+                .toList(),
+      )
+      ..children =
+          (json['children'] as List<dynamic>)
+              .map((e) => QuestionResult.fromJson(e as Map<String, dynamic>))
+              .toList();
 
 Map<String, dynamic> _$QuestionResultToJson(QuestionResult instance) =>
     <String, dynamic>{
