@@ -25,6 +25,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.flutter_survey.flutter_survey
+        pluginClass: FlutterSurveyPlugin
+      ios:
+        pluginClass: FlutterSurveyPlugin
 
   # To add assets to your package, add an assets section, like this:
   # assets:
