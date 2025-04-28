@@ -14,9 +14,15 @@ class QuestionResult extends Equatable {
   ///The list of answers selected by the user.
   late final List<String> answers;
 
-  QuestionResult({required this.question, List<String>? answers})
-      : answers = answers ?? [],
-        children = [];
+  ///The id from the question
+  final String id;
+
+  QuestionResult({
+    required this.question,
+    List<String>? answers,
+    required this.id,
+  }) : answers = answers ?? [],
+       children = [];
 
   factory QuestionResult.fromJson(Map<String, dynamic> json) =>
       _$QuestionResultFromJson(json);
@@ -24,5 +30,5 @@ class QuestionResult extends Equatable {
   Map<String, dynamic> toJson() => _$QuestionResultToJson(this);
 
   @override
-  List<Object?> get props => [question, answers, children];
+  List<Object?> get props => [question, answers, children, id];
 }

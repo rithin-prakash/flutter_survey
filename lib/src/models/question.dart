@@ -29,19 +29,24 @@ class Question extends Equatable {
   ///The list of answers selected by the user.
   late final List<String> answers;
 
-  Question(
-      {required this.question,
-      this.singleChoice = true,
-      Map<String, List<Question>?>? answerChoices,
-      this.isMandatory = false,
-      this.errorText,
-      this.properties,
-      required this.answerType,
-      List<String>? answers})
-      : answers = answers ?? [],
-        answerChoices = answerChoices ?? {},
-        assert(
-            properties != null && answerChoices!.isEmpty || properties == null);
+  ///The id for the question
+  final String id;
+
+  Question({
+    required this.id,
+    required this.question,
+    this.singleChoice = true,
+    Map<String, List<Question>?>? answerChoices,
+    this.isMandatory = false,
+    this.errorText,
+    this.properties,
+    required this.answerType,
+    List<String>? answers,
+  }) : answers = answers ?? [],
+       answerChoices = answerChoices ?? {},
+       assert(
+         properties != null && answerChoices!.isEmpty || properties == null,
+       );
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);
@@ -49,6 +54,12 @@ class Question extends Equatable {
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   @override
-  List<Object?> get props =>
-      [question, singleChoice, answerChoices, isMandatory, answerType];
+  List<Object?> get props => [
+    question,
+    singleChoice,
+    answerChoices,
+    isMandatory,
+    answerType,
+    id,
+  ];
 }

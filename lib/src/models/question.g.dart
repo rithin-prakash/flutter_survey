@@ -7,6 +7,7 @@ part of 'question.dart';
 // **************************************************************************
 
 Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
+  id: json['id'] as String,
   question: json['question'] as String,
   singleChoice: json['single_choice'] as bool? ?? true,
   answerChoices: (json['answer_choices'] as Map<String, dynamic>?)?.map(
@@ -36,4 +37,5 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
   'error_text': instance.errorText,
   'properties': instance.properties,
   'answers': instance.answers,
+  'id': instance.id,
 };

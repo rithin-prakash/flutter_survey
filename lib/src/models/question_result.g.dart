@@ -13,6 +13,7 @@ QuestionResult _$QuestionResultFromJson(Map<String, dynamic> json) =>
             (json['answers'] as List<dynamic>?)
                 ?.map((e) => e as String)
                 .toList(),
+        id: json['id'] as String,
       )
       ..children =
           (json['children'] as List<dynamic>)
@@ -24,4 +25,5 @@ Map<String, dynamic> _$QuestionResultToJson(QuestionResult instance) =>
       'question': instance.question,
       'children': instance.children.map((e) => e.toJson()).toList(),
       'answers': instance.answers,
+      'id': instance.id,
     };
