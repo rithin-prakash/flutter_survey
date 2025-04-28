@@ -39,8 +39,14 @@ class _AnswerChoiceWidgetState extends State<AnswerChoiceWidget> {
         onChange: widget.onChange,
         question: widget.question,
       ),
-      "date" => DateAnswer(onChange: widget.onChange),
-      "file" => FileAnswer(onChange: widget.onChange),
+      "date" => DateAnswer(
+        onChange: widget.onChange,
+        question: widget.question,
+      ),
+      "file" => FileAnswer(
+        onChange: widget.onChange,
+        question: widget.question,
+      ),
       _ => SizedBox.shrink(),
     };
 
@@ -219,8 +225,9 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
 }
 
 class DateAnswer extends StatefulWidget {
-  const DateAnswer({super.key, required this.onChange});
+  const DateAnswer({super.key, required this.onChange, required this.question});
   final void Function(List<String> answers) onChange;
+  final Question question;
 
   @override
   State<DateAnswer> createState() => _DateAnswerState();
@@ -230,10 +237,17 @@ class _DateAnswerState extends State<DateAnswer> {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    if (widget.question.answers.isNotEmpty) {
+      _textEditingController.text = widget.question.answers.first;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        print("key key key");
         final data = await showDatePicker(
           context: context,
           firstDate: DateTime(1900),
@@ -260,8 +274,9 @@ class _DateAnswerState extends State<DateAnswer> {
 }
 
 class FileAnswer extends StatefulWidget {
-  const FileAnswer({super.key, required this.onChange});
+  const FileAnswer({super.key, required this.onChange, required this.question});
   final void Function(List<String> answers) onChange;
+  final Question question;
 
   @override
   State<FileAnswer> createState() => _FileAnswerState();
@@ -269,6 +284,15 @@ class FileAnswer extends StatefulWidget {
 
 class _FileAnswerState extends State<FileAnswer> {
   final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.question.answers.isNotEmpty) {
+      _textEditingController.text =
+          widget.question.answers.first.split("/").first;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -295,7 +319,7 @@ class _FileAnswerState extends State<FileAnswer> {
                 // }
 
                 widget.onChange([
-                  base64Encode(await data.xFiles.first.readAsBytes()),
+                  "${data.xFiles.first.name}/${base64Encode(await data.xFiles.first.readAsBytes())}",
                 ]);
                 _textEditingController.text = data.xFiles.first.name;
                 // widget.onChange([_textEditingController.text]);

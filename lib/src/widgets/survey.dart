@@ -13,21 +13,25 @@ class Survey extends StatefulWidget {
   final List<Question> initialData;
 
   ///Function that returns a custom widget that is to be rendered as a field, preferably a [FormField]
-  final Widget Function(BuildContext context, Question question,
-      void Function(List<String>) update)? builder;
+  final Widget Function(
+    BuildContext context,
+    Question question,
+    void Function(List<String>) update,
+  )?
+  builder;
 
   ///An optional method to call with the questions answered so far.
   final void Function(List<QuestionResult> questionResults)? onNext;
 
   ///A parameter to configure the default error message to be shown when validation fails.
   final String? defaultErrorText;
-  const Survey(
-      {Key? key,
-      required this.initialData,
-      this.builder,
-      this.defaultErrorText,
-      this.onNext})
-      : super(key: key);
+  const Survey({
+    super.key,
+    required this.initialData,
+    this.builder,
+    this.defaultErrorText,
+    this.onNext,
+  });
   @override
   State<Survey> createState() => _SurveyState();
 }
@@ -38,7 +42,8 @@ class _SurveyState extends State<Survey> {
     BuildContext context,
     Question question,
     void Function(List<String>) update,
-  ) builder;
+  )
+  builder;
 
   @override
   void initState() {
@@ -48,11 +53,13 @@ class _SurveyState extends State<Survey> {
     if (widget.builder != null) {
       builder = widget.builder!;
     } else {
-      builder = (context, model, update) => QuestionCard(
+      builder =
+          (context, model, update) => QuestionCard(
             key: /* ValueKey(model.hashCode)*/ ObjectKey(model),
             question: model,
             update: update,
-            defaultErrorText: model.errorText ??
+            defaultErrorText:
+                model.errorText ??
                 (widget.defaultErrorText ?? "This field is mandatory*"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
           );
@@ -64,23 +71,25 @@ class _SurveyState extends State<Survey> {
   Widget build(BuildContext context) {
     var children = _buildChildren(_surveyState);
 
-    return CustomScrollView(slivers: [
-      DiffUtilSliverList.fromKeyedWidgetList(
-        children: children,
-        insertAnimationBuilder: (context, animation, child) => FadeTransition(
-          opacity: animation,
-          child: child,
+    return CustomScrollView(
+      slivers: [
+        DiffUtilSliverList.fromKeyedWidgetList(
+          children: children,
+          insertAnimationBuilder:
+              (context, animation, child) =>
+                  FadeTransition(opacity: animation, child: child),
+          removeAnimationBuilder:
+              (context, animation, child) => FadeTransition(
+                opacity: animation,
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  axisAlignment: 0,
+                  child: child,
+                ),
+              ),
         ),
-        removeAnimationBuilder: (context, animation, child) => FadeTransition(
-          opacity: animation,
-          child: SizeTransition(
-            sizeFactor: animation,
-            axisAlignment: 0,
-            child: child,
-          ),
-        ),
-      ),
-    ]);
+      ],
+    );
   }
 
   List<QuestionResult> _mapCompletionData(List<Question> questionNodes) {
@@ -88,14 +97,17 @@ class _SurveyState extends State<Survey> {
     for (int i = 0; i < questionNodes.length; i++) {
       if (_isAnswered(questionNodes[i])) {
         var child = QuestionResult(
-            question: questionNodes[i].question,
-            answers: questionNodes[i].answers);
+          question: questionNodes[i].question,
+          id: questionNodes[i].id,
+          answers: questionNodes[i].answers,
+        );
         list.add(child);
 
         for (var answer in questionNodes[i].answers) {
           if (_hasAssociatedQuestionList(questionNodes[i], answer)) {
             child.children.addAll(
-                _mapCompletionData(questionNodes[i].answerChoices[answer]!));
+              _mapCompletionData(questionNodes[i].answerChoices[answer]!),
+            );
           }
         }
       }
@@ -118,7 +130,8 @@ class _SurveyState extends State<Survey> {
         for (var answer in questionNodes[i].answers) {
           if (_hasAssociatedQuestionList(questionNodes[i], answer)) {
             list.addAll(
-                _buildChildren(questionNodes[i].answerChoices[answer]!));
+              _buildChildren(questionNodes[i].answerChoices[answer]!),
+            );
           }
         }
       }
