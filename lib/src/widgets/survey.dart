@@ -100,6 +100,7 @@ class _SurveyState extends State<Survey> {
           question: questionNodes[i].question,
           id: questionNodes[i].id,
           answers: questionNodes[i].answers,
+          type: questionNodes[i].answerType,
         );
         list.add(child);
 
