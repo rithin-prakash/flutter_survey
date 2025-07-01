@@ -100,32 +100,61 @@ class _SingleChoiceAnswerState extends State<SingleChoiceAnswer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-          widget.question.answerChoices.keys
-              .map(
-                (answer) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      Radio(
-                        value: answer,
-                        groupValue: _selectedAnswer,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedAnswer = value as String;
-                          });
-                          widget.onChange([_selectedAnswer!]);
-                        },
-                      ),
-                      Flexible(fit: FlexFit.loose, child: Text(answer)),
-                    ],
-                  ),
-                ),
-              )
-              .toList(),
+    final size = MediaQuery.sizeOf(context);
+
+    return Wrap(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
+      children: List.from(
+        widget.question.answerChoices.keys.map(
+          (answer) => SizedBox(
+            width: size.width / 2 - 30,
+            child: ListTile(
+              leading: Radio(
+                value: answer,
+                groupValue: _selectedAnswer,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedAnswer = value as String;
+                  });
+                  widget.onChange([_selectedAnswer!]);
+                },
+              ),
+
+              contentPadding: EdgeInsets.zero,
+              title: Text(answer),
+            ),
+          ),
+        ),
+      ),
     );
+
+    //  Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children:
+    //       widget.question.answerChoices.keys
+    //           .map(
+    //             (answer) => Padding(
+    //               padding: const EdgeInsets.symmetric(vertical: 4),
+    //               child: Row(
+    //                 children: [
+    //                   Radio(
+    //                     value: answer,
+    //                     groupValue: _selectedAnswer,
+    //                     onChanged: (value) {
+    //                       setState(() {
+    //                         _selectedAnswer = value as String;
+    //                       });
+    //                       widget.onChange([_selectedAnswer!]);
+    //                     },
+    //                   ),
+    //                   Flexible(fit: FlexFit.loose, child: Text(answer)),
+    //                 ],
+    //               ),
+    //             ),
+    //           )
+    //           .toList(),
+    // );
   }
 }
 
@@ -157,30 +186,65 @@ class _MultipleChoiceAnswerState extends State<MultipleChoiceAnswer> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:
-          widget.question.answerChoices.keys
-              .map(
-                (answer) => Row(
-                  children: [
-                    Checkbox(
-                      value: _answers.contains(answer),
-                      onChanged: (value) {
-                        if (value == true) {
-                          _answers.add(answer);
-                        } else {
-                          _answers.remove(answer);
-                        }
-                        widget.onChange(_answers);
-                        setState(() {});
-                      },
-                    ),
-                    Flexible(fit: FlexFit.loose, child: Text(answer)),
-                  ],
+    final size = MediaQuery.sizeOf(context);
+
+    return Wrap(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
+      children: List.from(
+        widget.question.answerChoices.keys.map(
+          (answer) => SizedBox(
+            width: size.width / 2 - 30,
+            child: ListTile(
+              leading: Checkbox(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  side: BorderSide(width: .1, color: Colors.grey.shade100),
                 ),
-              )
-              .toList(),
+                value: _answers.contains(answer),
+                onChanged: (value) {
+                  if (value == true) {
+                    _answers.add(answer);
+                  } else {
+                    _answers.remove(answer);
+                  }
+                  widget.onChange(_answers);
+                  setState(() {});
+                },
+              ),
+
+              contentPadding: EdgeInsets.zero,
+              title: Text(answer),
+            ),
+          ),
+        ),
+      ),
     );
+
+    // Column(
+    //   children:
+    //       widget.question.answerChoices.keys
+    //           .map(
+    //             (answer) => Row(
+    //               children: [
+    //                 Checkbox(
+    //                   value: _answers.contains(answer),
+    //                   onChanged: (value) {
+    //                     if (value == true) {
+    //                       _answers.add(answer);
+    //                     } else {
+    //                       _answers.remove(answer);
+    //                     }
+    //                     widget.onChange(_answers);
+    //                     setState(() {});
+    //                   },
+    //                 ),
+    //                 Flexible(fit: FlexFit.loose, child: Text(answer)),
+    //               ],
+    //             ),
+    //           )
+    //           .toList(),
+    // );
   }
 }
 
@@ -212,10 +276,33 @@ class _SentenceAnswerState extends State<SentenceAnswer> {
 
   @override
   Widget build(BuildContext context) {
+    var borderRadius = 14.0;
+    var borderColor = const Color.fromARGB(255, 172, 177, 184);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextFormField(
         controller: _textEditingController,
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(width: 1, color: borderColor),
+          ),
+
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(width: 1, color: borderColor),
+          ),
+
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: const BorderSide(width: 1, color: Colors.red),
+          ),
+
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            borderSide: BorderSide(width: 1, color: borderColor),
+          ),
+        ),
         onChanged: (value) {
           widget.onChange([_textEditingController.text]);
         },
@@ -246,6 +333,8 @@ class _DateAnswerState extends State<DateAnswer> {
 
   @override
   Widget build(BuildContext context) {
+    var borderRadius = 14.0;
+    var borderColor = const Color.fromARGB(255, 172, 177, 184);
     return InkWell(
       onTap: () async {
         final data = await showDatePicker(
@@ -265,7 +354,30 @@ class _DateAnswerState extends State<DateAnswer> {
           ignoring: true,
           child: TextFormField(
             controller: _textEditingController,
-            decoration: InputDecoration(prefixIcon: Icon(Icons.calendar_month)),
+            decoration: InputDecoration(
+              suffixIcon: Image.asset(
+                'packages/flutter_survey/assets/calendar.png',
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(width: 1, color: borderColor),
+              ),
+
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(width: 1, color: borderColor),
+              ),
+
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: const BorderSide(width: 1, color: Colors.red),
+              ),
+
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: BorderSide(width: 1, color: borderColor),
+              ),
+            ),
           ),
         ),
       ),
@@ -296,10 +408,52 @@ class _FileAnswerState extends State<FileAnswer> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
+    var borderRadius = 14.0;
+    var borderColor = const Color.fromARGB(255, 172, 177, 184);
+    return widget.question.answers.isNotEmpty
+        ? Container(
+          // height: 60,
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          padding: EdgeInsets.all(16),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('packages/flutter_survey/assets/file.png'),
+                  SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      widget.question.answers.first.split("/").first,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  widget.onChange([]);
+                  _textEditingController.text = '';
+                },
+                child: Icon(Icons.close),
+              ),
+            ],
+          ),
+        )
+        : Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: InkWell(
             onTap: () async {
               final data = await FilePicker.platform.pickFiles();
@@ -307,16 +461,6 @@ class _FileAnswerState extends State<FileAnswer> {
               if (data != null) {
                 widget.onChange([]);
                 _textEditingController.text = '';
-                // final dataBase64 = <String>[];
-                // for (var x in data.xFiles) {
-                //   if (dataBase64.isNotEmpty) {
-                //     _textEditingController.text =
-                //         "${_textEditingController.text}, ";
-                //   }
-                //   dataBase64.add(base64Encode(await x.readAsBytes()));
-                //   _textEditingController.text =
-                //       _textEditingController.text + x.name;
-                // }
 
                 widget.onChange([
                   "${data.xFiles.first.name}/${base64Encode(await data.xFiles.first.readAsBytes())}",
@@ -325,28 +469,38 @@ class _FileAnswerState extends State<FileAnswer> {
                 // widget.onChange([_textEditingController.text]);
               }
             },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: IgnorePointer(
-                ignoring: true,
-                child: TextFormField(
-                  controller: _textEditingController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.file_present),
+            child: IgnorePointer(
+              ignoring: true,
+              child: TextFormField(
+                controller: _textEditingController,
+                decoration: InputDecoration(
+                  prefixIcon: Image.asset(
+                    'packages/flutter_survey/assets/file.png',
+                  ),
+
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    borderSide: BorderSide(width: 1, color: borderColor),
+                  ),
+
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    borderSide: BorderSide(width: 1, color: borderColor),
+                  ),
+
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    borderSide: const BorderSide(width: 1, color: Colors.red),
+                  ),
+
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    borderSide: BorderSide(width: 1, color: borderColor),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        IconButton(
-          onPressed: () {
-            widget.onChange([]);
-            _textEditingController.text = '';
-          },
-          icon: Icon(Icons.close),
-        ),
-      ],
-    );
+        );
   }
 }

@@ -26,3 +26,6 @@
 .dart_tool/
 .packages
 build/
+
+# FVM Version Cache
+.fvm/
