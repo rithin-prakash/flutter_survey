@@ -4,7 +4,7 @@ version: 1.0.1
 homepage: https://github.com/Michelphoenix98/flutter_survey
 
 environment:
-  sdk: "3.7.2"
+  sdk: "3.8.1"
 
 dependencies:
   diffutil_sliverlist: ^0.5.1
